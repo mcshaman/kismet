@@ -13,14 +13,15 @@ top_builddir = $(BLDHOME)
 # Set sane values if we don't have the base config
 INSTALL ?= /usr/bin/install
 plugindir ?= $(shell pkg-config --variable=plugindir kismet)
+bindir ?= $(shell pkg-config --variable=exec_prefix kismet)
 
 ifeq ("$(plugindir)", "")
 	plugindir := "/usr/local/lib/kismet/"
 	plugingeneric := "1"
 endif
 
-ifeq ("$(BIN)", "")
-	BIN := "/usr/local/bin/"
+ifeq ("$(bindir)", "")
+	bindir := "/usr/local/bin/"
 endif
 
 INSTUSR ?= root
@@ -36,11 +37,11 @@ endif
 
 	mkdir -p $(DESTDIR)/$(plugindir)/$(PLUGIN_NAME)
 	$(INSTALL) -o $(INSTUSR) -g $(INSTGRP) -m 444 manifest.conf $(DESTDIR)/$(plugindir)/$(PLUGIN_NAME)/manifest.conf
-	$(INSTALL) -o $(INSTUSR) -g $(INSTGRP) -m 555 kismet_proxytest $(BIN)/kismet_proxytest;
+	$(INSTALL) -o $(INSTUSR) -g $(INSTGRP) -m 555 kismet_proxytest $(bindir)/kismet_proxytest;
 
 
 userinstall:
 	mkdir -p ${HOME}/.kismet/plugins/$(PLUGIN_NAME)
 	$(INSTALL) manifest.conf ${HOME}/.kismet/plugins/$(PLUGIN_NAME)/manifest.conf
-	$(INSTALL) -o $(INSTUSR) -g $(INSTGRP) -m 555 kismet_proxytest $(BIN)/kismet_proxytest;
+	$(INSTALL) -o $(INSTUSR) -g $(INSTGRP) -m 555 kismet_proxytest $(bindir)/kismet_proxytest;
 
